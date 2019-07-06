@@ -1,5 +1,6 @@
 import logging
 import os
+from utils import DirectoryNotFoundError
 
 
 IMAGES_DIR = os.path.join(os.getcwd(), "images")
@@ -16,10 +17,17 @@ class ImageManipulator:
             self.name = f"{name}-{ImageManipulator.COUNTER}{file_ext}"
         else:
             self.name = os.path.basename(self.image_path)
+
         ImageManipulator.COUNTER += 1
 
-    def create_new_image_path(self):
-        new_img_path = os.path.join(CHANGED_IMAGES_DIR, self.name)
+    def create_new_image_path(self, image_dir=None):
+        if image_dir is None:
+            image_dir = CHANGED_IMAGES_DIR
+        else:
+            ImageManipulator.check_if_directory_exists(image_dir)
+            image_dir = image_dir
+
+        new_img_path = os.path.join(image_dir, self.name)
         return new_img_path
 
     def resize_image_to_thumbnail(self, img, size):
@@ -32,14 +40,21 @@ class ImageManipulator:
         return rgb_img
 
     @staticmethod
-    def get_images(image_dir=None):
-        images = []
-        image_dir = image_dir
+    def get_images_path(image_dir=None):
         if image_dir is None:
             image_dir = IMAGES_DIR
+        else:
+            ImageManipulator.check_if_directory_exists(image_dir)
+            image_dir = image_dir
 
+        images = []
         for img_file in os.listdir(image_dir):
             img_path = os.path.join(image_dir, img_file)
             images.append(img_path)
 
         return images
+
+    @staticmethod
+    def check_if_directory_exists(directory):
+        if not os.path.isdir(directory):
+            raise DirectoryNotFoundError(f"Provided directory does not exist: {directory}")

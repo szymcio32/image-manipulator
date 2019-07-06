@@ -2,6 +2,10 @@ import argparse
 import logging
 
 
+class DirectoryNotFoundError(Exception):
+    pass
+
+
 def add_arguments_to_parse():
     parser = argparse.ArgumentParser()
     parser.add_argument('--size',
@@ -22,7 +26,12 @@ def add_arguments_to_parse():
                         metavar="image_source_dir",
                         type=str,
                         default=None,
-                        help="Absolute path to directory")
+                        help="Absolute path to image source directory")
+    parser.add_argument('--destination',
+                        metavar="image_destination_dir",
+                        type=str,
+                        default=None,
+                        help="Absolute path to image destination directory")
 
     return parser.parse_args()
 
