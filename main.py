@@ -16,6 +16,8 @@ def main():
                 image_manipulator.resize_image_to_thumbnail(img, args.size)
             if args.jpg:
                 img = image_manipulator.convert_to_jpg(img)
+            if args.contrast:
+                img = image_manipulator.adjust_contrast(img, args.contrast)
             img.save(new_image_path)
             logging.info('Converting finished with success. The new image path is %s', new_image_path)
 

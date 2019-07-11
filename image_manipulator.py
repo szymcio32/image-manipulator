@@ -1,10 +1,9 @@
 import logging
 import os
+
+from PIL import ImageEnhance
+
 from utils import DirectoryNotFoundError
-
-
-IMAGES_DIR = os.path.join(os.getcwd(), "images")
-CHANGED_IMAGES_DIR = os.path.join(os.getcwd(), "changed-images")
 
 
 class ImageManipulator:
@@ -21,11 +20,8 @@ class ImageManipulator:
         ImageManipulator.COUNTER += 1
 
     def create_new_image_path(self, image_dir=None):
-        if image_dir is None:
-            image_dir = CHANGED_IMAGES_DIR
-        else:
-            ImageManipulator.check_if_directory_exists(image_dir)
-            image_dir = image_dir
+        ImageManipulator.check_if_directory_exists(image_dir)
+        image_dir = image_dir
 
         new_img_path = os.path.join(image_dir, self.name)
         return new_img_path
@@ -39,13 +35,15 @@ class ImageManipulator:
         logging.info('Image %s has been converted to .jpg', self.name)
         return rgb_img
 
+    def adjust_contrast(self, img, factor):
+        enhancer_object = ImageEnhance.Contrast(img)
+        logging.info('Contrast of image %s has been changed to %s', self.name, factor)
+        return enhancer_object.enhance(factor)
+
     @staticmethod
     def get_images_path(image_dir=None):
-        if image_dir is None:
-            image_dir = IMAGES_DIR
-        else:
-            ImageManipulator.check_if_directory_exists(image_dir)
-            image_dir = image_dir
+        ImageManipulator.check_if_directory_exists(image_dir)
+        image_dir = image_dir
 
         images = []
         for img_file in os.listdir(image_dir):
