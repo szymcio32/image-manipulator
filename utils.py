@@ -24,12 +24,12 @@ def add_arguments_to_parse():
     images_destination_dir = os.path.join(os.getcwd(), "changed-images")
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--size',
+    parser.add_argument('--thumbnail',
                         metavar='px',
                         type=int,
                         nargs=2,
                         default=None,
-                        help="New size of the image")
+                        help="Resize image to thumbnail")
     parser.add_argument('--name',
                         metavar="file_name",
                         type=str,
@@ -54,6 +54,26 @@ def add_arguments_to_parse():
                         choices=[FactoryRange(0.0, 1.0)],
                         default=None,
                         help="Factor from 0.0 to 1.0 for image contrast")
+    parser.add_argument('--brightness',
+                        metavar="brightness_factor",
+                        type=float,
+                        choices=[FactoryRange(0.0, 1.0)],
+                        default=None,
+                        help="Factor from 0.0 to 1.0 for image brightness")
+    parser.add_argument('--crop',
+                        metavar='px',
+                        type=int,
+                        nargs=2,
+                        default=None,
+                        help="Crop the image to specific size")
+    parser.add_argument('--logo',
+                        metavar="image logo path",
+                        type=str,
+                        help="Absolute path to logo")
+    parser.add_argument('--quotes',
+                        metavar="csv file path with quotes",
+                        type=str,
+                        help="Absolute path to csv file")
 
     return parser.parse_args()
 
