@@ -73,7 +73,7 @@ class ImageManipulator:
         Thumbnail the image
         :param size: new image size
         """
-        self.image = self.image.thumbnail(size)
+        self.image.thumbnail(size)
         logging.info("Size of a %s has been changed to %s px", self.name, size)
 
     def convert_to_jpg(self):
